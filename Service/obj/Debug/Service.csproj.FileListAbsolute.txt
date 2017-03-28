@@ -1,0 +1,17 @@
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\Service.dll.config
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\Service.dll
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\Service.pdb
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\AutoMapper.dll
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\EntityFramework.dll
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\EntityFramework.SqlServer.dll
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\System.ValueTuple.dll
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\AutoMapper.xml
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\EntityFramework.xml
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\EntityFramework.SqlServer.xml
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\obj\Debug\Service.dll
+c:\users\zvone\documents\visual studio 2015\Projects\Project\Service\obj\Debug\Service.pdb
+C:\Users\zvone\documents\visual studio 2015\Projects\Project\Service\obj\Debug\Service.csprojResolveAssemblyReference.cache
+C:\Users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\PagedList.dll
+C:\Users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\PagedList.Mvc.dll
+C:\Users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\PagedList.xml
+C:\Users\zvone\documents\visual studio 2015\Projects\Project\Service\bin\Debug\PagedList.Mvc.xml
