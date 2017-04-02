@@ -71,7 +71,10 @@
     <Compile Include="DataAccessLayer\VehicleMake.cs" />
     <Compile Include="DataAccessLayer\VehicleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\VehicleServices.cs" />
+    <Compile Include="Services\IEntity.cs" />
+    <Compile Include="Services\IRepository.cs" />
+    <Compile Include="Services\VehicleMakeRepository.cs" />
+    <Compile Include="Services\VehicleModelRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

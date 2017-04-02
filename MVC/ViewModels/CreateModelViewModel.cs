@@ -17,8 +17,8 @@ namespace MVC.ViewModels
         public string Name { get; set; }
         public string Abrv { get; set; }
 
-        private static VehicleServices vehicleServices = new VehicleServices();
-        public List<VehicleMake> vehicleMakeList = vehicleServices.MakeList();
+        private static IRepository<VehicleMake> repository = new VehicleMakeRepository();
+        public List<VehicleMake> vehicleMakeList = repository.List;
 
         public static implicit operator CreateModelViewModel(VehicleModel vehiclemodel)
         {

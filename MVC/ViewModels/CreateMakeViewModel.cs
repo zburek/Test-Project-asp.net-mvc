@@ -19,9 +19,7 @@ namespace MVC.ViewModels
                 Name = vehiclemake.Name,
                 Abrv = vehiclemake.Abrv
             };
-
         }
-
         public static implicit operator VehicleMake(CreateMakeViewModel viewModel)
         {
             return new VehicleMake
@@ -30,7 +28,5 @@ namespace MVC.ViewModels
                 Abrv = viewModel.Abrv
             };
         }
-
     }
 }
-

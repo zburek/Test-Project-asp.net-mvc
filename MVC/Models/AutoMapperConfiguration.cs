@@ -11,13 +11,11 @@ namespace MVC.Models
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile(new IndexMakeProfile());
-                cfg.AddProfile(new EditMakeGetProfile());
-                cfg.AddProfile(new EditMakePostProfile());
+                cfg.AddProfile(new EditMakeProfile());
                 cfg.AddProfile(new DeleteMakeProfile());
 
                 cfg.AddProfile(new IndexModelProfile());
-                cfg.AddProfile(new EditModelGetProfile());
-                cfg.AddProfile(new EditModelPostProfile());
+                cfg.AddProfile(new EditModelProfile());
                 cfg.AddProfile(new DeleteModelProfile());
             });
         }
@@ -31,18 +29,11 @@ namespace MVC.Models
             CreateMap<VehicleMake, IndexViewModel>();
         }
     }
-    internal class EditMakeGetProfile : Profile
+    internal class EditMakeProfile : Profile
     {
-        public EditMakeGetProfile()
+        public EditMakeProfile()
         {
-            CreateMap<VehicleMake, EditMakeViewModel>();
-        }
-    }
-    internal class EditMakePostProfile : Profile
-    {
-        public EditMakePostProfile()
-        {
-            CreateMap<EditMakeViewModel, VehicleMake>();
+            CreateMap<VehicleMake, EditMakeViewModel>().ReverseMap();
         }
     }
     internal class DeleteMakeProfile : Profile
@@ -62,18 +53,11 @@ namespace MVC.Models
             CreateMap<VehicleModel, IndexViewModel>();
         }
     }
-    internal class EditModelGetProfile : Profile
+    internal class EditModelProfile : Profile
     {
-        public EditModelGetProfile()
+        public EditModelProfile()
         {
-            CreateMap<VehicleModel, EditModelViewModel>();
-        }
-    }
-    internal class EditModelPostProfile : Profile
-    {
-        public EditModelPostProfile()
-        {
-            CreateMap<EditModelViewModel, VehicleModel>();
+            CreateMap<EditModelViewModel, VehicleModel>().ReverseMap();
         }
     }
     internal class DeleteModelProfile : Profile

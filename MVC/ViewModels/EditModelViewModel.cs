@@ -1,10 +1,7 @@
 ﻿using Service.DataAccessLayer;
 using Service.Services;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace MVC.ViewModels
 {
@@ -16,9 +13,7 @@ namespace MVC.ViewModels
         public string Name { get; set; }
         public string Abrv { get; set; }
 
-        private static IVehicleMakeList vehicleServices = new VehicleServices();
-        public List<VehicleMake> vehicleMakeList = vehicleServices.MakeList();
-    }
-
-    
+        private static IRepository<VehicleMake> repository = new VehicleMakeRepository();
+        public List<VehicleMake> vehicleMakeList = repository.List;
+    }  
 }

@@ -1,13 +1,11 @@
 namespace Service.DataAccessLayer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    using Services;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
+
 
     [Table("VehicleMake")]
-    public partial class VehicleMake
+    public partial class VehicleMake :IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

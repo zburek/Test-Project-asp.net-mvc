@@ -12,7 +12,7 @@ namespace MVC.Controllers
 {
     public class VehicleMakeController : Controller
     {
-        //public VehicleServices vehicleServices = new VehicleServices();
+        IRepository<VehicleMake> repository = new VehicleMakeRepository();
         // GET: VehicleMake
         public ActionResult Index(string currentFilter, int? page, string sortOrder = null, string searchString = null)
         {
@@ -27,13 +27,12 @@ namespace MVC.Controllers
             {
                 searchString = currentFilter;
             }
-            ViewBag.CurrentFilter = searchString;
             int pageSize = 5;
             int pageNumber = (page ?? 1);
+            ViewBag.CurrentFilter = searchString;
 
-            ISortedVehicleMakeList vehicleServices = new VehicleServices();
-            List<VehicleMake> vehicleMakeList = vehicleServices.IndexMakeList(sortOrder, searchString);
-            List<IndexViewModel> indexViewModel = Mapper.Map<List<VehicleMake>, List<IndexViewModel>>(vehicleMakeList);
+            var vehicleMakeList = repository.IndexList(sortOrder, searchString);
+            var indexViewModel = Mapper.Map<List<VehicleMake>, List<IndexViewModel>>(vehicleMakeList);
             return View(indexViewModel.ToPagedList(pageNumber, pageSize));
         }
         
@@ -49,12 +48,11 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name,Abrv")] CreateMakeViewModel makeViewMake)
         {
-            IAddVehicleMake vehicleServices = new VehicleServices();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    vehicleServices.CreateMake(makeViewMake);
+                    repository.Add(makeViewMake);
                     return RedirectToAction("Index");
                 }
             }
@@ -72,11 +70,9 @@ namespace MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            IVehicleMakeList vehicleServicesMakeList = new VehicleServices();
-            List<VehicleMake> vehicleMakeList = vehicleServicesMakeList.MakeList();
-            IVehicleMake vehicleServicesMake = new VehicleServices();
-            VehicleMake vehicleMake = vehicleServicesMake.vehicleMake(id);
-            EditMakeViewModel editMakeView = Mapper.Map<VehicleMake, EditMakeViewModel>(vehicleMake);
+            var vehicleMakeList = repository.List;
+            var vehicleMake = repository.FindById(id);
+            var editMakeView = Mapper.Map<VehicleMake, EditMakeViewModel>(vehicleMake);
             if (editMakeView == null)
             {
                 return HttpNotFound();
@@ -89,13 +85,12 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Abrv")] EditMakeViewModel editMakeView)
         {
-            IEditVehicleMake vehicleServices = new VehicleServices();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    VehicleMake editVehicleMake = Mapper.Map<EditMakeViewModel, VehicleMake>(editMakeView);
-                    vehicleServices.EditMake(editVehicleMake);
+                    var editVehicleMake = Mapper.Map<EditMakeViewModel, VehicleMake>(editMakeView);
+                    repository.Edit(editVehicleMake);
                     return RedirectToAction("Index");
                 }
             }
@@ -117,9 +112,8 @@ namespace MVC.Controllers
             {
                 ViewBag.ErrorMessage = "Delete faild. Try again and if the problem persists see your system administrator.";
             }
-            IVehicleMake vehicleServices = new VehicleServices();
-            VehicleMake vehicleMake = vehicleServices.vehicleMake(id);
-            DeleteViewModel deleteMakeView = Mapper.Map<VehicleMake, DeleteViewModel>(vehicleMake);
+            var vehicleMake = repository.FindById(id);
+            var deleteMakeView = Mapper.Map<VehicleMake, DeleteViewModel>(vehicleMake);
             if (deleteMakeView == null)
             {
                 return HttpNotFound();
@@ -132,10 +126,9 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            IDeleteVehicleMake vehicleServices = new VehicleServices();
             try
             {
-                vehicleServices.DeleteVehicleMake(id);
+                repository.Delete(id);
             }
             catch (DataException)
             {

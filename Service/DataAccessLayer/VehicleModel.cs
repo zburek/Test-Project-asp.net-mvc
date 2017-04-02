@@ -1,13 +1,11 @@
 namespace Service.DataAccessLayer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    using Services;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
+
 
     [Table("VehicleModel")]
-    public partial class VehicleModel
+    public partial class VehicleModel : IEntity
     {
         public int Id { get; set; }
         [ForeignKey("VehicleMake")]
