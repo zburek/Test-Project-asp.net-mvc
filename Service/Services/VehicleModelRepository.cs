@@ -1,4 +1,5 @@
-﻿using Service.DataAccessLayer;
+﻿using PagedList;
+using Service.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -13,37 +14,62 @@ namespace Service.Services
         {
             vehicleContext = new VehicleContext();
         }
-        public List<VehicleModel> IndexList(string sortOrder, string searchString)
+        public IPagedList<VehicleModel> IndexList(string sortOrder, string searchString, int pageNumber, int pageSize)
         {
-            var vehicleModelList = vehicleContext.VehicleModels.ToList();
-
+            IPagedList<VehicleModel> vehicleModelList = new List<VehicleModel>().ToPagedList(pageNumber, pageSize);
             if (!String.IsNullOrEmpty(searchString))
             {
-                vehicleModelList = vehicleContext.VehicleModels.Where(v => v.VehicleMake.Name.Contains(searchString) || v.Abrv.Contains(searchString)).ToList();
+                vehicleModelList = vehicleContext.VehicleModels.Where(v => v.VehicleMake.Name.Contains(searchString) || v.Abrv.Contains(searchString)).OrderBy(v => v.Id).ToPagedList(pageNumber, pageSize);
+                switch (sortOrder)
+                {
+                    case "Make":
+                        vehicleModelList = vehicleModelList.OrderBy(v => v.VehicleMake.Name).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "make_desc":
+                        vehicleModelList = vehicleModelList.OrderByDescending(v => v.VehicleMake.Name).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "name_desc":
+                        vehicleModelList = vehicleModelList.OrderByDescending(v => v.Name).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "Name":
+                        vehicleModelList = vehicleModelList.OrderBy(v => v.Name).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "Abrv":
+                        vehicleModelList = vehicleModelList.OrderBy(v => v.Abrv).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "abrv_desc":
+                        vehicleModelList = vehicleModelList.OrderByDescending(v => v.Abrv).ToPagedList(pageNumber, pageSize);
+                        break;
+                    default:
+                        break;
+                }
             }
-            switch (sortOrder)
+            else
             {
-                case "Make":
-                    vehicleModelList = vehicleModelList.OrderByDescending(v => v.VehicleMake.Name).ToList();
-                    break;
-                case "make_desc":
-                    vehicleModelList = vehicleModelList.OrderBy(v => v.VehicleMake.Name).ToList();
-                    break;
-                case "name_desc":
-                    vehicleModelList = vehicleModelList.OrderByDescending(v => v.Name).ToList();
-                    break;
-                case "Name":
-                    vehicleModelList = vehicleModelList.OrderBy(v => v.Name).ToList();
-                    break;
-                case "Abrv":
-                    vehicleModelList = vehicleModelList.OrderBy(v => v.Abrv).ToList();
-                    break;
-                case "abrv_desc":
-                    vehicleModelList = vehicleModelList.OrderByDescending(v => v.Abrv).ToList();
-                    break;
-                default:
-                    vehicleModelList = vehicleModelList.OrderBy(v => v.Id).ToList();
-                    break;
+                switch (sortOrder)
+                {
+                    case "Make":
+                        vehicleModelList = vehicleContext.VehicleModels.OrderByDescending(v => v.VehicleMake.Name).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "make_desc":
+                        vehicleModelList = vehicleContext.VehicleModels.OrderBy(v => v.VehicleMake.Name).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "name_desc":
+                        vehicleModelList = vehicleContext.VehicleModels.OrderByDescending(v => v.Name).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "Name":
+                        vehicleModelList = vehicleContext.VehicleModels.OrderBy(v => v.Name).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "Abrv":
+                        vehicleModelList = vehicleContext.VehicleModels.OrderBy(v => v.Abrv).ToPagedList(pageNumber, pageSize);
+                        break;
+                    case "abrv_desc":
+                        vehicleModelList = vehicleContext.VehicleModels.OrderByDescending(v => v.Abrv).ToPagedList(pageNumber, pageSize);
+                        break;
+                    default:
+                        vehicleModelList = vehicleContext.VehicleModels.OrderBy(v => v.Id).ToPagedList(pageNumber, pageSize);
+                        break;
+                }
             }
             return (vehicleModelList);
         }

@@ -32,9 +32,10 @@ namespace MVC.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            var vehicleModelList = repository.IndexList(sortOrder, searchString);
-            var indexViewModel = Mapper.Map<List<VehicleModel>, List<IndexViewModel>>(vehicleModelList);
-            return View(indexViewModel.ToPagedList(pageNumber, pageSize));
+            var vehicleModelList = repository.IndexList(sortOrder, searchString, pageNumber, pageSize);
+            var indexViewModel = Mapper.Map<IEnumerable<IndexViewModel>>(vehicleModelList);
+            var pagedIndexViewModel = new StaticPagedList<IndexViewModel>(indexViewModel, vehicleModelList.GetMetaData());
+            return View(pagedIndexViewModel);
         }
         
         // GET: VehicleModel/Create
