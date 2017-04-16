@@ -7,7 +7,7 @@ namespace Service.Services
     {
         IPagedList<T> IndexList(string sortOrder, string searchString, int pagenumber, int pageSize);
         void Add(T enity);
-        List<T> List { get; }
+        IEnumerable<T> List { get; }
         T FindById(int? Id);
         void Edit(T entity);
         void Delete(int? id);

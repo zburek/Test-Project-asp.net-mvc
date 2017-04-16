@@ -14,6 +14,6 @@ namespace MVC.ViewModels
         public string Abrv { get; set; }
 
         private static IRepository<VehicleMake> repository = new VehicleMakeRepository();
-        public List<VehicleMake> vehicleMakeList = repository.List;
+        public IEnumerable<VehicleMake> vehicleMakeList = repository.List;
     }  
 }

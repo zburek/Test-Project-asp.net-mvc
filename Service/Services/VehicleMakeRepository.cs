@@ -16,49 +16,38 @@ namespace Service.Services
         }
         public IPagedList<VehicleMake> IndexList(string sortOrder, string searchString, int pageNumber, int pageSize)
         {
-            IPagedList<VehicleMake> vehicleMakeList = new List<VehicleMake>().ToPagedList(pageNumber, pageSize);
+            IQueryable<VehicleMake> vehicleMake;
             if (!String.IsNullOrEmpty(searchString))
             {
-                vehicleMakeList = vehicleContext.VehicleMakes.Where(v => v.Name.Contains(searchString) || v.Abrv.Contains(searchString)).OrderBy(v => v.Id).ToPagedList(pageNumber, pageSize);
-                switch (sortOrder)
-                {
-                    case "name_desc":
-                        vehicleMakeList = vehicleMakeList.OrderByDescending(v => v.Name).ToPagedList(pageNumber, pageSize);
-                        break;
-                    case "Name":
-                        vehicleMakeList = vehicleMakeList.OrderBy(v => v.Name).ToPagedList(pageNumber, pageSize);
-                        break;
-                    case "Abrv":
-                        vehicleMakeList = vehicleMakeList.OrderBy(v => v.Abrv).ToPagedList(pageNumber, pageSize);
-                        break;
-                    case "abrv_desc":
-                        vehicleMakeList = vehicleMakeList.OrderByDescending(v => v.Abrv).ToPagedList(pageNumber, pageSize);
-                        break;
-                    default:
-                        break;
-                }
+                vehicleMake = from make in vehicleContext.VehicleMakes
+                              where make.Name.Contains(searchString) || make.Abrv.Contains(searchString)
+                              select make;
             }
             else
             {
-                switch (sortOrder)
-                {
-                    case "name_desc":
-                        vehicleMakeList = vehicleContext.VehicleMakes.OrderByDescending(v => v.Name).ToPagedList(pageNumber, pageSize);
-                        break;
-                    case "Name":
-                        vehicleMakeList = vehicleContext.VehicleMakes.OrderBy(v => v.Name).ToPagedList(pageNumber, pageSize);
-                        break;
-                    case "Abrv":
-                        vehicleMakeList = vehicleContext.VehicleMakes.OrderBy(v => v.Abrv).ToPagedList(pageNumber, pageSize);
-                        break;
-                    case "abrv_desc":
-                        vehicleMakeList = vehicleContext.VehicleMakes.OrderByDescending(v => v.Abrv).ToPagedList(pageNumber, pageSize);
-                        break;
-                    default:
-                        vehicleMakeList = vehicleContext.VehicleMakes.OrderBy(v => v.Id).ToPagedList(pageNumber, pageSize);
-                        break;
-                }
-            } 
+                vehicleMake = from make in vehicleContext.VehicleMakes
+                              select make;
+            }
+
+            IPagedList<VehicleMake> vehicleMakeList; 
+            switch (sortOrder)
+            {
+                case "Name":
+                    vehicleMakeList = vehicleMake.OrderBy(v => v.Name).ToPagedList(pageNumber, pageSize);
+                    break;
+                case "name_desc":
+                    vehicleMakeList = vehicleMake.OrderByDescending(v => v.Name).ToPagedList(pageNumber, pageSize);
+                    break;
+                case "Abrv":
+                    vehicleMakeList = vehicleMake.OrderBy(v => v.Abrv).ToPagedList(pageNumber, pageSize);
+                    break;
+                case "abrv_desc":
+                    vehicleMakeList = vehicleMake.OrderByDescending(v => v.Abrv).ToPagedList(pageNumber, pageSize);
+                    break;
+                default:
+                    vehicleMakeList = vehicleMake.OrderBy(v => v.Id).ToPagedList(pageNumber, pageSize);
+                    break;
+            }
             return (vehicleMakeList);
         }
         public void Add(VehicleMake vehicleMake)
@@ -66,11 +55,12 @@ namespace Service.Services
             vehicleContext.VehicleMakes.Add(vehicleMake);
             vehicleContext.SaveChanges();
         }
-        public List<VehicleMake> List
+        public IEnumerable<VehicleMake> List
         {
             get
             {
-                var vehicleMakeList = vehicleContext.VehicleMakes.ToList();
+                var vehicleMakeList = from make in vehicleContext.VehicleMakes
+                                      select make;
                 return (vehicleMakeList);
             }
         } 
@@ -87,7 +77,6 @@ namespace Service.Services
         public void Delete(int? Id)
         {
             var vehicleModelList = vehicleContext.VehicleModels.Where(x => x.MakeId == Id).ToList();
-
             vehicleModelList.ForEach(model => vehicleContext.VehicleModels.Remove(model));
             vehicleContext.SaveChanges();
 
